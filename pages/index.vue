@@ -1,27 +1,29 @@
 <template>
-    <div class="grid grid-cols-2 gap-4">
-        <div class="mx-auto mt-10 row-span-1">
-            <UButton @click="facebookAuthWithRedirect">FACEBOOK Redirect</UButton>
-            <span> | </span>
-            <UButton @click="facebookAuthWithPopup">FACEBOOK Popup</UButton>
-            <UDivider label="OR" />
-            <UButton @click="googleAuthWithRedirect">Google Redirect</UButton>
-            <span> | </span>
-            <UButton @click="googleAuthWithPopup">Google Popup</UButton>
-            <span> | </span>
+    <div class="flex flex-col">
+        <div class="mx-auto flex flex-col">
+            <UButton class="my-3" @click="facebookAuthWithRedirect">Facebook Redirect</UButton>
+
+            <UButton class="my-3" @click="facebookAuthWithPopup">Facebook Popup</UButton>
+
+            <UButton class="my-3" @click="googleAuthWithRedirect">Google Redirect</UButton>
+
+            <UButton class="my-3" @click="googleAuthWithPopup">Google Popup</UButton>
+
+            <UButton class="my-3" @click="logout">Logout</UButton>
+
         </div>
-        <div class="m-auto row-span-3">
-            <pre v-if="user">{{ user }}</pre>
-            <pre v-if="error">{{ error }}</pre>
+        <div class="p-5">
+            <pre class="bg-red-200 p-5" v-if="errorMessage">{{ errorMessage }}</pre>
+            <pre class="bg-emerald-100 p-5" v-if="user">{{ user }}</pre>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { GoogleAuthProvider, signInWithPopup, signInWithRedirect, FacebookAuthProvider, getRedirectResult } from 'firebase/auth'
+import { GoogleAuthProvider, signInWithPopup, signInWithRedirect, FacebookAuthProvider, getRedirectResult, signOut } from 'firebase/auth'
 
 const user = ref(null)
-const error = ref(null)
+const errorMessage = ref(null)
 
 
 const nuxtApp = useNuxtApp()
@@ -40,8 +42,8 @@ const facebookAuthWithRedirect = () => {
             console.log(result)
             user.value = result.user
         }).catch((error: any) => {
-            console.log(error)
-            error.value = error
+            console.log(error.code)
+            errorMessage.value = error.code
         });
 }
 
@@ -53,8 +55,8 @@ const facebookAuthWithPopup = () => {
             console.log(result)
             user.value = result.user
         }).catch((error: any) => {
-            console.log(error)
-            error.value = error
+            console.log(error.code)
+            errorMessage.value = error.code
         });
 }
 
@@ -65,8 +67,8 @@ const googleAuthWithRedirect = () => {
             console.log(result)
             user.value = result.user
         }).catch((error: any) => {
-            console.log(error)
-            error.value = error
+            console.log(error.code)
+            errorMessage.value = error
         });
 
 }
@@ -79,20 +81,20 @@ const googleAuthWithPopup = () => {
             console.log(result)
             user.value = result.user
         }).catch((error: any) => {
-            console.log(error)
-            error.value = error
+            console.log(error.code)
+            errorMessage.value = error.message
         });
 }
 
 const logout = () => {
     console.log('logout');
-    nuxtApp?.$auth?.signOut()
+    signOut(nuxtApp.$auth)
         .then(() => {
             console.log('logout success')
             user.value = null
         }).catch((error: any) => {
-            console.log(error)
-            error.value = error
+            console.log(error.code)
+            errorMessage.value = error.code
         });
 }
     
