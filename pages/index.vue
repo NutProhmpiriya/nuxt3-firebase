@@ -83,6 +83,18 @@ const googleAuthWithPopup = () => {
             error.value = error
         });
 }
+
+const logout = () => {
+    console.log('logout');
+    nuxtApp?.$auth?.signOut()
+        .then(() => {
+            console.log('logout success')
+            user.value = null
+        }).catch((error: any) => {
+            console.log(error)
+            error.value = error
+        });
+}
     
 </script>
 
