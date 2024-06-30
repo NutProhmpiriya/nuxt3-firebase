@@ -3,5 +3,6 @@ import { defineNuxtConfig } from "nuxt/config";
 
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ['@nuxt/ui']
+  modules: ['@nuxt/ui'],
+  // plugins: ['~/plugins/firebase.client.ts'],
 })
