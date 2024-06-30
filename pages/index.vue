@@ -14,7 +14,10 @@
         </div>
         <div class="p-5">
             <pre class="bg-red-200 p-5" v-if="errorMessage">{{ errorMessage }}</pre>
-            <pre class="bg-emerald-100 p-5" v-if="user">{{ user }}</pre>
+            <div v-if="user" class="max-w-100vw text-wrap">
+                <pre class="bg-emerald-100 text-clip overflow-hidden " >{{ user }}</pre>
+            </div>
+            
         </div>
     </div>
 </template>
@@ -116,9 +119,11 @@ const logout = () => {
         .then(() => {
             console.log('logout success')
             user.value = null
+            errorMessage.value = null
         })
         .catch((error: any) => {
             console.log(error.code)
+            user.value = null
             errorMessage.value = error.code
         })
         .finally(() => {
@@ -129,5 +134,8 @@ const logout = () => {
 </script>
 
 <style>
+.max-w-100vw {
+    width: 91vw;
+}
 
 </style>
